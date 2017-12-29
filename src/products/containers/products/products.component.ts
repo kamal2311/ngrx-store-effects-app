@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { Pizza } from "../../models/pizza.model";
 import { PizzasService } from "../../services/pizzas.service";
 import { Observable } from "rxjs/Observable";
-import { ProductsState, getAllPizzas, LoadPizzas } from "../../store";
+import { ProductsState, getPizzasArray, LoadPizzas } from "../../store";
 import { Store } from "@ngrx/store";
 
 @Component({
@@ -42,7 +42,7 @@ export class ProductsComponent implements OnInit {
     //   this.pizzas = pizzas;
     // });
 
-    this.pizzas$ = this.store.select(getAllPizzas);
+    this.pizzas$ = this.store.select(getPizzasArray);
     this.store.dispatch(new LoadPizzas());
   }
 }

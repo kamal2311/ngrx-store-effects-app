@@ -7,14 +7,14 @@ import {
 } from "../actions/pizzas.action";
 
 export interface PizzaState {
-  data: Pizza[];
+  entities: { [id: number]: Pizza };
   loading: boolean;
   loaded: boolean;
 }
 
 export const initialState: PizzaState = {
-  data: [
-    {
+  entities: {
+    2: {
       name: "Seaside Surfin'",
       toppings: [
         {
@@ -56,7 +56,7 @@ export const initialState: PizzaState = {
       ],
       id: 2
     }
-  ],
+  },
   loading: false,
   loaded: false
 };
@@ -70,7 +70,15 @@ export function pizzasReducer(
       return { ...state, loading: true };
     case LOAD_PIZZAS_SUCCESS: {
       const data = action.payload;
-      return { ...state, loading: false, loaded: true, data };
+
+      const entities = data.reduce(
+        (pizzas: { [id: number]: Pizza }, pizza: Pizza) => {
+          return { ...pizzas, [pizza.id]: pizza };
+        },
+        { ...state.entities }
+      );
+
+      return { ...state, loading: false, loaded: true, entities };
     }
     case LOAD_PIZZAS_FAIL:
       return { ...state, loading: false, loaded: false };
